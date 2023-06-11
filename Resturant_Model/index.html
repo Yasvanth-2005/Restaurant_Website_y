@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant Website using React</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="bootstrap-icons/bootstrap-icons.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      // Common Things
+      function Btn(props) {
+        return <button className="btn"><a href={props.link}>{props.text}</a></button>;
+      }
+
+      function WhyusBtn(props) {
+        return (
+          <div className="card">
+            <div className="card_number">{props.number}</div>
+            <div className="card_heading">{props.title}</div>
+            <div className="card_info">{props.info}</div>
+          </div>
+        );
+      }
+
+      const ChefCard = (props) => {
+        return (
+          <div className="chef_card">
+            <img src={props.img} />
+            <div className="overlay"></div>
+            <div className="name_details">
+              <h4>{props.cook}</h4>
+              <h5>{props.position}</h5>
+            </div>
+            <div className="social-media">
+              <a href="#">
+                <i className="bi bi-twitter"></i>
+              </a>
+              <a href="#">
+                <i className="bi bi-facebook"></i>
+              </a>
+              <a href="#">
+                <i className="bi bi-instagram"></i>
+              </a>
+              <a href="#">
+                <i className="bi bi-linkedin"></i>
+              </a>
+            </div>
+          </div>
+        );
+      };
+
+      const FooterMainSubHeading = (props) => {
+        return <h1 className="footer_sub">{props.text}</h1>;
+      };
+
+      const Contact_detail = (props) => {
+        return (
+          <div className="contact_details_here">
+            <div className="contact_icon">
+              <i className={props.class}></i>
+            </div>
+            <div className="contact_detail_info">
+              <div className="info_heading">{props.heading}</div>
+              <div className="info_info">{props.info}</div>
+            </div>
+          </div>
+        );
+      };
+
+      function SideHeading(props) {
+        return (
+          <>
+            <div className="section_side_heaidng">{props.sideheading}</div>
+            <div className="section_side_title">{props.title}</div>
+          </>
+        );
+      }
+
+      function MenuDish(props) {
+        return (
+          <div className="dish">
+            <div className="dish_img">
+              <img src={props.img} />
+            </div>
+            <div className="dish_desc">
+              <div className="dish_details">
+                <h5 className="dish_title">{props.title}</h5>
+                <h5 className="dish_cost">{props.cost}</h5>
+              </div>
+              <h6 className="dish_desc1">{props.desc}</h6>
+            </div>
+          </div>
+        );
+      }
+
+      function SpecialDishesMenu(props) {
+        return (
+          <div className={props.class}>
+            <div className="tab_info">
+              <h2>{props.heading}</h2>
+              <p>{props.sub1}</p>
+              <p>{props.sub2}</p>
+            </div>
+            <div className="tab_img">
+              <img src={props.img} />
+            </div>
+          </div>
+        );
+      }
+
+      function ShowEvent(props) {
+        return(
+          <div className="slide" style={props.style}>
+                  <div className="img_part">
+                    <img src={props.img} />  
+                  </div>
+                  <div className="details">
+                    <h2>{props.heading}</h2>  
+                    <h1>{props.cost}</h1>
+                    <p className="italic">{props.italic}</p>
+                    <p> {props.p1}</p>
+                    <p> {props.p1}</p>
+                    <p> {props.p1}</p>
+                    <p>{props.p2}</p>
+                  </div>
+          </div>
+        )
+      }
+
+      function showNav() {
+        console.log("yash");
+        document.getElementById("sidebar").classList.add("show");
+      }
+      function hideNav() {
+        document.getElementById("sidebar").classList.remove("show");
+      }
+
+      const whyusinfo = [
+        {
+          id: 1,
+          number: 1,
+          title: "Lorem Ipsum",
+          info: "Ulamco laboris nisi ut aliquip ex ea commodo consequat. Et consectetur ducimus vero placeat",
+        },
+        {
+          id: 2,
+          number: 2,
+          title: "Repellat Nihil",
+          info: "Dolorem est fugiat occaecati voluptate velit esse. Dicta veritatis dolor quod et vel dire leno para dest",
+        },
+        {
+          id: 3,
+          number: 3,
+          title: "Ad ad velit qui",
+          info: "Molestiae officiis omnis illo asperiores. Aut doloribus vitae sunt debitis quo vel nam quis",
+        },
+      ];
+      const dishes = [
+        {
+          id: 1,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/menu/lobster-bisque.jpg",
+          name: "Lobster Bisque",
+          amount: "$5.95",
+          desc: "Lorem, deren, trataro, filede, nerada",
+          type: "starters",
+        },
+        {
+          id: 2,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/menu/bread-barrel.jpg",
+          name: "Bread Barrel",
+          amount: "$6.95",
+          desc: "Lorem, deren, trataro, filede, nerada",
+          type: "specality",
+        },
+        {
+          id: 3,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/menu/cake.jpg",
+          name: "Crab Cake",
+          amount: "$7.95",
+          desc: "A delicate crab cake served on a toasted roll with lettuce and tartar sauce",
+          type: "starters",
+        },
+        {
+          id: 4,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/menu/caesar.jpg",
+          name: "Ceaser Selections",
+          amount: "$8.95",
+          desc: "Lorem, deren, trataro, filede, nerada",
+          type: "salads",
+        },
+        {
+          id: 5,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/menu/tuscan-grilled.jpg",
+          name: "Tuscan Grilled",
+          amount: "$9.95",
+          desc: "Grilled chicken with provolone, artichoke hearts, and roasted red pesto",
+          type: "specality",
+        },
+        {
+          id: 6,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/menu/mozzarella.jpg",
+          name: "Mozzarella Stick",
+          amount: "$4.95",
+          desc: "Lorem, deren, trataro, filede, nerada",
+          type: "starters",
+        },
+        {
+          id: 7,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/menu/greek-salad.jpg",
+          name: "Greek Salad",
+          amount: "$9.95",
+          desc: "Fresh spinach, crisp romaine, tomatoes, and Greek olives",
+          type: "salads",
+        },
+        {
+          id: 8,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/menu/spinach-salad.jpg",
+          name: "Spinach Salad",
+          amount: "$9.95",
+          desc: "Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette",
+          type: "salads",
+        },
+        {
+          id: 9,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/menu/lobster-roll.jpg",
+          name: "Lobster Roll",
+          amount: "$12.95",
+          desc: "Plump lobster meat, mayo and crisp lettuce on a toasted bulky roll",
+          type: "specality",
+        },
+      ];
+      const chefs_info = [
+        {
+          id: 1,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/chefs/chefs-1.jpg",
+          cook: "Walter White",
+          position: "Master chef",
+        },
+        {
+          id: 2,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/chefs/chefs-2.jpg",
+          cook: "Sarah Johansan",
+          position: "Patisser",
+        },
+        {
+          id: 3,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/chefs/chefs-3.jpg",
+          cook: "William Andreson",
+          position: "cook",
+        },
+      ];
+      const SpecialDishes = [
+        {
+          id: 1,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/specials-1.png",
+          heading: "Architecto ut aperiam autem id",
+          sub1: "Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a videna mareta paulona marka",
+          sub2: "Et nobis maiores eius. Voluptatibus ut enim blanditiis atque harum sint. Laborum eos ipsum ipsa odit magni. Incidunt hic ut molestiae aut qui. Est repellat minima eveniet eius et quis magni nihil. Consequatur dolorem quaerat quos qui similique accusamus nostrum rem vero",
+        },
+        {
+          id: 2,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/specials-2.png",
+          heading: "Et blanditiis nemo veritatis excepturi",
+          sub1: "Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a videna mareta paulona marka",
+          sub2: "Ea ipsum voluptatem consequatur quis est. Illum error ullam omnis quia et reiciendis sunt sunt est. Non aliquid repellendus itaque accusamus eius et velit ipsa voluptates. Optio nesciunt eaque beatae accusamus lerode pakto madirna desera vafle de nideran pal",
+        },
+        {
+          id: 3,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/specials-3.png",
+          heading: "Impedit facilis occaecati odio neque aperiam sit",
+          sub1: "Eos voluptatibus quo. Odio similique illum id quidem non enim fuga. Qui natus non sunt dicta dolor et. In asperiores velit quaerat perferendis aut",
+          sub2: "Iure officiis odit rerum. Harum sequi eum illum corrupti culpa veritatis quisquam. Neque necessitatibus illo rerum eum ut. Commodi ipsam minima molestiae sed laboriosam a iste odio. Earum odit nesciunt fugiat sit ullam. Soluta et harum voluptatem optio quae",
+        },
+        {
+          id: 4,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/specials-4.png",
+          heading:
+            "Fuga dolores inventore laboriosam ut est accusamus laboriosam dolore",
+          sub1: "Totam aperiam accusamus. Repellat consequuntur iure voluptas iure porro quis delectus",
+          sub2: "Eaque consequuntur consequuntur libero expedita in voluptas. Nostrum ipsam necessitatibus aliquam fugiat debitis quis velit. Eum ex maxime error in consequatur corporis atque. Eligendi asperiores sed qui veritatis aperiam quia a laborum inventore",
+        },
+        {
+          id: 5,
+          img: "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/specials-5.png",
+          heading: "Est eveniet ipsam sindera pad rone matrelat sando reda",
+          sub1: "Omnis blanditiis saepe eos autem qui sunt debitis porro quia.",
+          sub2: "Exercitationem nostrum omnis. Ut reiciendis repudiandae minus. Omnis recusandae ut non quam ut quod eius qui. Ipsum quia odit vero atque qui quibusdam amet. Occaecati sed est sint aut vitae molestiae voluptate vel",
+        },
+      ];
+      const events = [
+        {id:1,img:'https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/event-birthday.jpg',heading:'Birthday Parties',cost:'$189',ip:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',p1:'Ullamco laboris nisi ut aliquip ex ea commodo consequat.',p2:'Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur'},
+        {id:2,img:'https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/event-private.jpg',heading:'Private Parties',cost:'$290',ip:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',p1:'Ullamco laboris nisi ut aliquip ex ea commodo consequat.',p2:'Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur'},
+        {id:3,img:'https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/event-custom.jpg',heading:'Custom Parties',cost:'$99',ip:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',p1:'Ullamco laboris nisi ut aliquip ex ea commodo consequat.',p2:'Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur'}
+      ];
+      // End common Tings
+
+      const Navbar = () => {
+        return (
+    <nav>        
+      <h1 className="title">Restaurant</h1>
+      <div className="tabs" id="sidebar">
+        <i className="bi bi-x-lg nav-icon-1" onClick={hideNav}></i>
+        <ul>
+          <li>
+            <a href="#home">Home</a>
+          </li>
+          <li>
+            <a href="#about">About</a>
+          </li>
+          <li>
+            <a href="#menu">Menu</a>
+          </li>
+          <li>
+            <a href="#specials">Specials</a>
+          </li>
+          <li>
+            <a href="#events">Events</a>
+          </li>
+          <li>
+            <a href="#chefs">Chefs</a>
+          </li>
+          <li>
+            <a href="#gallery">Gallery</a>
+          </li>
+          <li>
+            <a href="#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <Btn text="Book a Table" link="#reservation"/>
+        <i className="bi bi-list nav-icon" onClick={showNav}></i>
+      </div>
+    </nav>
+  );
+};
+
+      const HeroSection = () => {
+        return (
+          <div className="hero" id="home">
+            <div className="hero-content">
+              <div className="hero_title">
+                Welcome To <span>Restaurant</span>
+              </div>
+              <div className="hero_sub-title">
+                Delivering great food for over 18 years!
+              </div>
+              <div className="btns-section">
+                <Btn text="Our Menu" link="#menu"/>
+                <Btn text="Book a Table" link="#reservation" />
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const Premain = () => {
+        return (
+          <>
+            <Navbar />
+            <HeroSection />
+          </>
+        );
+      };
+
+      const AboutSection = () => {
+        const about_img =
+          "https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/about.jpg";
+        return (
+          <div className="about_section" id="about">
+            <div className="about_info">
+              <p className="about_info_main">
+                Voluptatem dignissimos provident quasi corporis voluptates sit
+                assumenda.
+              </p>
+              <div className="about_info_sub">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </div>
+              <ul>
+                <li>
+                  {" "}
+                  Ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </li>
+                <li>
+                  Duis aute irure dolor in reprehenderit in voluptate velit.
+                </li>
+                <li>
+                  Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                  aute irure dolor in reprehenderit in voluptate trideta
+                  storacalaperda mastiro dolore eu fugiat nulla pariatur.
+                </li>
+              </ul>
+              <div className="about_info_sub">
+                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                aute irure dolor in reprehenderit in voluptate velit esse cillum
+                dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                cupidatat non proident, sunt in culpa qui officia deserunt
+                mollit anim id est laborum
+              </div>
+            </div>
+            <div className="img">
+              <img src={about_img} />
+            </div>
+          </div>
+        );
+      };
+
+      const Whyus = () => {
+        return (
+          <section className="whyus_section">
+            <SideHeading
+              sideheading="WHY US"
+              title="Why Choose Our Restaurant"
+            />
+            <div className="whyus_cards_sections">
+              {whyusinfo.map((card) => (
+                <WhyusBtn
+                  key={card.id}
+                  number={card.number}
+                  title={card.title}
+                  info={card.info}
+                />
+              ))}
+            </div>
+          </section>
+        );
+      };
+
+      const Menu = () => {
+        const [menuFilter, setMenuFilter] = useState("all");
+        function setMenuFilterBtn(filter) {
+          setMenuFilter(filter);
+        }
+        return (
+          <section className="menu_section" id="menu">
+            <SideHeading sideheading="MENU" title="Check Out Our Tasty Menu" />
+            <div className="menu_place">
+              <div className="filter-btns_section">
+                <ul className="filter-btns">
+                  <li
+                    className={
+                      menuFilter === "all" ? "filter-btn active" : "filter-btn"
+                    }
+                    onClick={() => setMenuFilterBtn("all")}
+                  >
+                    All
+                  </li>
+                  <li
+                    className={
+                      menuFilter === "starters"
+                        ? "filter-btn active"
+                        : "filter-btn"
+                    }
+                    onClick={() => setMenuFilterBtn("starters")}
+                  >
+                    Starters
+                  </li>
+                  <li
+                    className={
+                      menuFilter === "salads"
+                        ? "filter-btn active"
+                        : "filter-btn"
+                    }
+                    onClick={() => setMenuFilterBtn("salads")}
+                  >
+                    Salads
+                  </li>
+                  <li
+                    className={
+                      menuFilter === "specality"
+                        ? "filter-btn active"
+                        : "filter-btn"
+                    }
+                    onClick={() => setMenuFilterBtn("specality")}
+                  >
+                    Specality
+                  </li>
+                </ul>
+              </div>
+              <div className="menu_dishes_list">
+                {dishes
+                  .filter((dish) =>
+                    menuFilter === "all" ? dish : dish.type === menuFilter
+                  )
+                  .map((dish) => (
+                    <MenuDish
+                      key={dish.id}
+                      img={dish.img}
+                      title={dish.name}
+                      cost={dish.amount}
+                      desc={dish.desc}
+                    />
+                  ))}
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      const Specials = () => {
+        const [activeSpecialTab, setactiveSpecialTab] = useState(1);
+        function setSpecial(index) {
+          setactiveSpecialTab(index);
+        }
+        return (
+          <section className="specials_sections" id="specials">
+            <SideHeading sideheading="SPECIALS" title="Check Our Specials" />
+            <div className="special_tab_section">
+              <div className="special_tabs">
+                <div
+                  className={
+                    activeSpecialTab === 1
+                      ? "special_tab active_tab"
+                      : "special_tab"
+                  }
+                  onClick={() => setSpecial(1)}
+                >
+                  Modi Sit est
+                </div>
+                <div
+                  className={
+                    activeSpecialTab === 2
+                      ? "special_tab active_tab"
+                      : "special_tab"
+                  }
+                  onClick={() => setSpecial(2)}
+                >
+                  Unde praesentium sed
+                </div>
+                <div
+                  className={
+                    activeSpecialTab === 3
+                      ? "special_tab active_tab"
+                      : "special_tab"
+                  }
+                  onClick={() => setSpecial(3)}
+                >
+                  Pariatur explicabo vel
+                </div>
+                <div
+                  className={
+                    activeSpecialTab === 4
+                      ? "special_tab active_tab"
+                      : "special_tab"
+                  }
+                  onClick={() => setSpecial(4)}
+                >
+                  Nostrum qui quasi
+                </div>
+                <div
+                  className={
+                    activeSpecialTab === 5
+                      ? "special_tab active_tab"
+                      : "special_tab"
+                  }
+                  onClick={() => setSpecial(5)}
+                >
+                  Iusto ut expedita aut
+                </div>
+              </div>
+              <div className="special_tab_info">
+                {SpecialDishes.map((sDish) => (
+                  <SpecialDishesMenu
+                    key={sDish.id}
+                    heading={sDish.heading}
+                    img={sDish.img}
+                    sub1={sDish.sub1}
+                    sub2={sDish.sub2}
+                    class={
+                      activeSpecialTab === sDish.id
+                        ? "tab_info_parts active_tab"
+                        : "tab_info_parts"
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      const Events = () => {
+        const [currentEvent,setCurrentIndex] = useState(0);
+        function setIndex(index){
+          setCurrentIndex(index);
+          let indexValue = 'transform:translateX('+index*(-100)+'%)';
+        }
+        return (
+          <section className="events_sections" id="events">
+            <SideHeading
+              sideheading="EVENTS"
+              title="Organize Your Events in our Restaurant"
+            />
+            <div className="slider_container">
+              {events.map((event) => <ShowEvent key={event.id} heading={event.heading} img={event.img} cost={event.cost} italic={event.ip} p1={event.p1} p2={event.p2} style={{ transform:'translateX('+currentEvent*(-100)+'%)' }} />)}
+              <div className="slide_btns">
+                 <div className={currentEvent === 0 ? "slide-btn active" : "slide-btn"} onClick={()=> setIndex(0)}></div>
+                 <div className={currentEvent === 1 ? "slide-btn active" : "slide-btn"} onClick={()=> setIndex(1)}></div>
+                 <div className={currentEvent === 2 ? "slide-btn active" : "slide-btn"} onClick={()=> setIndex(2)}></div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      const Reservation = () => {
+        return (
+          <section className="reservation_sections" id="reservation">
+            <SideHeading sideheading="RESERVATION" title="Book a Table" />
+            <form action="#">
+              <div className="form-grid">
+                <input type="text" placeholder="Your Name" />
+                <input type="mail" placeholder="Email" />
+                <input type="text" placeholder="Your Phone" />
+                <input type="rext" placeholder="Date" />
+                <input type="text" placeholder="Time" />
+                <input type="text" placeholder="# of Perople" />
+              </div>
+              <div className="form-complete-row">
+                <textarea rows="4" placeholder="Message" />
+              </div>
+              <div className="submit-btn">
+                <input type="submit" className="btn" value="Book a Table" />
+              </div>
+            </form>
+          </section>
+        );
+      };
+
+      const Gallery = () => {
+        return (
+          <section className="gallery_sections" id="gallery">
+            <SideHeading
+              sideheading="GALLERY"
+              title="Some photos from Our Restaurant"
+            />
+            <div className="gallery">
+              <img src="https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/gallery/gallery-1.jpg" />
+              <img src="https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/gallery/gallery-2.jpg" />
+              <img src="https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/gallery/gallery-3.jpg" />
+              <img src="https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/gallery/gallery-4.jpg" />
+              <img src="https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/gallery/gallery-5.jpg" />
+              <img src="https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/gallery/gallery-6.jpg" />
+              <img src="https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/gallery/gallery-7.jpg" />
+              <img src="https://bootstrapmade.com/demo/templates/Restaurantly/assets/img/gallery/gallery-8.jpg" />
+            </div>
+          </section>
+        );
+      };
+
+      const Chefs = () => {
+        return (
+          <section className="chef_sections" id="chefs">
+            <SideHeading sideheading="CHEFS" title="Our Proffesional Chefs" />
+            <div className="chef_cards">
+              {chefs_info.map((info) => (
+                <ChefCard
+                  key={info.id}
+                  cook={info.cook}
+                  position={info.position}
+                  img={info.img}
+                />
+              ))}
+            </div>
+          </section>
+        );
+      };
+
+      const Contact = () => {
+        return (
+          <section className="contact_sections" id="contact">
+            <SideHeading sideheading="CONTACT" title="Contact Us" />
+            <div className="split">
+              <div className="contact_info">
+                <Contact_detail
+                  info="A108 Adam Street, New York, NY 535022"
+                  heading="Location:"
+                  class="bi bi-geo-alt"
+                />
+                <Contact_detail
+                  info="Monday-Saturday:11:00 AM - 2300 PM"
+                  heading="Open Hours:"
+                  class="bi bi-clock"
+                />
+                <Contact_detail
+                  info="info@example.com"
+                  heading="Email:"
+                  class="bi bi-envelope"
+                />
+                <Contact_detail
+                  info="+1 5589 55488 55s"
+                  heading="Call:"
+                  class="bi bi-phone"
+                />
+              </div>
+              <form action="#" className="contact_form">
+                <div className="two-rows">
+                  <input type="text" placeholder="Your Name" />
+                  <input type="mail" placeholder="Your Email" />
+                </div>
+                <div className="one-rows">
+                  <input type="text" placeholder="Subject" />
+                  <textarea placeholder="Message" rows="5" />
+                </div>
+                <div className="submit-btn">
+                  <input
+                    type="submit"
+                    className="btn"
+                    value="Send  a Message"
+                  />
+                </div>
+              </form>
+            </div>
+          </section>
+        );
+      };
+
+      const Footer = () => {
+        return (
+          <section className="footer">
+            <div className="footer_address">
+              <h3 className="footer_title">RESTAURANT</h3>
+              <div className="street">
+                A108 Adam Street <br />
+                NY 535022, USA
+              </div>
+              <div className="footer_contact">
+                <span>Phone:</span> +1 5589 55488 55 <br />
+                <span>Email:</span> info@example.com
+              </div>
+              <div className="links">
+                <a href="#">
+                  <div className="bi bi-twitter"></div>
+                </a>
+                <a href="#">
+                  <div className="bi bi-facebook"></div>
+                </a>
+                <a href="#">
+                  <div className="bi bi-instagram"></div>
+                </a>
+                <a href="#">
+                  <div className="bi bi-skype"></div>
+                </a>
+                <a href="#">
+                  <div className="bi bi-linkedin"></div>
+                </a>
+              </div>
+            </div>
+            <div className="footer_links">
+              <FooterMainSubHeading text="Useful Links" />
+              <ul className="list">
+                <li className="list_items">
+                  <a href="#">Home</a>
+                </li>
+                <li className="list_items">
+                  <a href="#">About Us</a>
+                </li>
+                <li className="list_items">
+                  <a href="#">Services</a>
+                </li>
+                <li className="list_items">
+                  <a href="#">Terms Of Services</a>
+                </li>
+                <li className="list_items">
+                  <a href="#">Privacy Policy</a>
+                </li>
+              </ul>
+            </div>
+            <div className="footer_services">
+              <FooterMainSubHeading text="Our Services" />
+              <ul className="list">
+                <li className="list_items">
+                  <a href="#">Web Design</a>
+                </li>
+                <li className="list_items">
+                  <a href="#">Web Development</a>
+                </li>
+                <li className="list_items">
+                  <a href="#">Product Managment</a>
+                </li>
+                <li className="list_items">
+                  <a href="#">Marketing</a>
+                </li>
+                <li className="list_items">
+                  <a href="#">Graphic Design</a>
+                </li>
+              </ul>
+            </div>
+            <div className="footer_newslatter">
+              <FooterMainSubHeading text="Our Newsletter" />
+              <h3 className="text_about_newslatter">
+                Tamen quem nulla quae legam multos aute sint culpa legam noster
+                magna
+              </h3>
+              <form action="#">
+                <input type="text" className="input" />
+                <input
+                  type="submit"
+                  className="subscribe_btn"
+                  value="Subscribe"
+                  placeholder="Email Address"
+                />
+              </form>
+            </div>
+          </section>
+        );
+      };
+
+      const MainFooter = () => {
+        const Blackbg = { background: "#000" };
+        return (
+          <section className="main_footer" style={Blackbg}>
+            <div className="copy">
+              © Copyright Restaurant. All Rights Reserved
+            </div>
+            <div className="by-yash">
+              Designed by <span>Yash</span>
+            </div>
+          </section>
+        );
+      };
+
+      const Uparrow = () => {
+        return (
+          <div className="up-btn">
+            <a href="#home">
+              <i className="bi bi-arrow-up"></i>
+            </a>
+          </div>
+        );
+      };
+
+      const Main = () => {
+        return (
+          <>
+            <Premain />
+            <AboutSection />
+            <Whyus />
+            <Menu />
+            <Specials />
+            <Events />
+            <Reservation />
+            <Gallery />
+            <Chefs />
+            <Contact />
+            <Footer />
+            <MainFooter />
+            <Uparrow />
+          </>
+        );
+      };
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<Main />);
+
+    </script>
+
+    <script src="bootstrap-icons/bootstrap-icons.json"></script>
+    <script src="app.js" type="text/javascript"></script>
+  </body>
+</html>
